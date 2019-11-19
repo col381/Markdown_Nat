@@ -1,6 +1,6 @@
 ---
-title: Analytics & Decision Sciences Monthly Report
-subtitle: October Finance Report
+title: Analytics & Decision Sciences Program
+subtitle: Monthly Financial Summary - October 2019
 author:  Nathalie Colgrave
 affiliation: CSIRO Data61 Finance Support # Or group/team
 photo: resources/img/photo.jpeg
@@ -24,17 +24,56 @@ library(gapminder)
 library(kableExtra)
 ```
 
-
 # Introduction
 My name is Nathalie Colgrave.  I work in Finance supporting CSIRO Data61. Data School was my introduction to coding.  Prior to Data School, monthly reports were compiled via manipulation in excel through cell referencing as well as usuage of functions such as vlookup.
 
 # My Project
-I am working through developing a monthly report to replace the current report.  To date I have been able to create short cuts to steps by coding part of the report.  I hope, over time to work towards compiling the whole report via R Studio.  The shortcuts have not only improved the process from a time perspective but also in the case of improving accruacy due to the reduced manual intervention.
+I am working through developing a monthly report to replace the current report.  To date I have been able to create short cuts to steps by coding part of the report.  My aim is to, over time, work towards compiling the whole report via R Studio.  The process to date has improved accuracy due to minimal manual intervention as well as being time effective.
 
-The Data I currently use is financial information downloaded from SAP
-**project**. What are 
-your goals, what was your data, how do you plan to work with it? Perhaps show some example data if 
-it would help.
+The Data I currently use is financial information downloaded from SAP.  Through coding,  R allows for the manipulation of a tibble frame with 582 observations and 15 variable to extract 10 lines and 2 columns summarising the external revenue and expenditure positions within groups structured under the program.  We are then able to drill down to project level to see what makes up the summary.  The program director can manage at the summary level.  The group and initiative leaders can follow up any financial issues with their project leaders as issues can be identified at project level.  
+
+Using the sum function we are able to establish 
+
+Total Revenue earned to date 
+```{sum(Initiative2$YTD_Actual_sum)}```
+Total Revenue budgeted for the Financial Year.
+```{sum(Initiative2$FY_Plan_sum)}```
+
+
+The table below is a drill down of the above numbers to  initiative level.  This level is managed by initiative leaders.
+```{revopex <- read_csv("Sept.csv")
+actual <- revopex %>%
+  mutate(Initiative = recode(Cluster_Contact, 
+                             `Brent Henderson` = "Environmental & Biological",
+                             `Chen Cai`  = "Transport and Logistics",
+                             `Gavin Walker` = "Data Science Application",
+                             `Lachlan Hetherton` = "Industrial Transformation",
+                             `Mahesh Prakash` = "Natural Hazards and Infrastructure",
+                             `Zili Zhu` = "Risklab",
+                             `Paul Cleary` = "Industrial Device Optimisation",
+                             `Simon Harrison` = "Digital Human",
+                             `Richard Nock` = "Machine Learning",
+                             `Not assigned` = "Initiative to be advised"))%>%
+  filter(Initiative!= "")
+
+Initiative2 <- actual%>%
+  mutate(Operating = recode(Cost_Element,`Travel` = "Other Operating",`TOTAL REVENUE`="External Revenue"))%>%
+  group_by(Initiative,Operating) %>%
+  summarise(YTD_Actual_sum = sum(YTD_Actual,na.rm = TRUE),FY_Plan_sum = sum(FY_Plan,na.rm = TRUE))%>%
+  filter(Operating %in% c("External Revenue"))}```
+
+The initiative leaders will then refer the project level information to project the
+leaders 
+```{}```
+
+Group leaders like to see available capacity per staff.
+```{}```
+
+Initiative leaders like to see what is actually allocated to their initiative and how that compares to their understanding of capability deployed to their area.
+```{}```
+
+Graph below illustrates what we have earned and what we anticipate to sign and deliver by year end.
+Our External Revenue Target is 11.4m.  Below shows that we are short of xxm  
 
 In order to build this demo poster correctly, you will also need to have installed the `tidyverse`, 
 `gapminder`, and `kableExtra` packages.
@@ -99,6 +138,8 @@ No prizes for guessing mine:
 What parts of the project took the most time and effort? Were there any surprising challenges you
 encountered, and how did you solve them?
 
+I generally go into any challenge with the attitude of "how hard can this be"
+
 # Next steps
 
 What further steps do you wish your project could take? Or are there any new digital skills that you
@@ -106,9 +147,11 @@ are keen to develop as a result of your involvement in the Data School?
 
 # My Data School Experience
 
-This poster is mostly about your synthesis project. However we would also like to hear about other
-parts of your Data School experience. What aspects of the program did you really enjoy? How have you
-been applying the skills you have learned in your daily work? Have you been able to transfer this 
-knowledge to your team members? Concrete examples demonstrating this would be useful here
-(meetings/talks/collaborations/new roles). Any descriptions of the personal impact the program has 
-had are welcome here as well!
+Other parts of your Data School experience. 
+- Culture - encourages one where you collaborate, pushes you to ask questions and work on your communication skills via slack.
+
+What aspects of the program did you really enjoy?  Feelings towards the program were balanced with frustration and satisfaction.  Extreme highs and lows.  Overall worth while.
+I have been analysing and summarising and refining the tidying process almost everyday of the week attempting to improve the compiling, analysing and presentation of financial information.
+
+I have discussed this knowledge with team members.  Team members are generally interested.  There is concern of juggling the program with work and a young family as well as juggling workload between team members whilst participation in the program.  
+
